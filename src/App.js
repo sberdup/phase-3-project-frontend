@@ -8,9 +8,9 @@ import NavBar from './components/NavBar'
 function App() {
   return (
     <div className="App">
-      <Routes>
+      <NavBar/>
         <h1>My app</h1>
-        <NavBar/>
+      <Routes>
         <Route path='/' element={<LandingPage />}>
 
         </Route>
