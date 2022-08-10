@@ -1,8 +1,12 @@
 import React from 'react'
+import EntityContainer from '../components/EntityContainer'
 
 function EditPage() {
   return (
-    <div>EditPage</div>
+    <>
+      <h1>Edit Page!</h1>
+      <EntityContainer />
+    </>
   )
 }
 
