@@ -1,6 +1,5 @@
 // import logo from './logo.svg';
-// import './App.css';
-import 'semantic-ui-css/semantic.min.css'
+import './App.css';
 import {Routes, Route} from 'react-router-dom'
 import EditPage from './routes/EditPage'
 import LandingPage from './routes/LandingPage'
