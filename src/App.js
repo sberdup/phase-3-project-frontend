@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 import './App.css';
-import {Routes, Route} from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import EditPage from './routes/EditPage'
 import LandingPage from './routes/LandingPage'
 import NavBar from './components/NavBar'
@@ -8,15 +8,11 @@ import NavBar from './components/NavBar'
 function App() {
   return (
     <div className="App">
+      <h1>My app</h1>
       <Routes>
-        <h1>My app</h1>
-        <NavBar/>
-        <Route path='/' element={<LandingPage />}>
-
-        </Route>
-        <Route path='/edit' element={<EditPage />}>
-
-        </Route>
+        <NavBar />
+        <Route path='/' element={<LandingPage />} />
+        <Route path='edit' element={<EditPage />} />
       </Routes>
     </div>
   );
