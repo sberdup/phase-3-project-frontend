@@ -1,11 +1,12 @@
 import React from 'react'
 import EntityContainer from '../components/EntityContainer'
 
-function LandingPage() {
+function LandingPage({allEntries}) {
+  console.log(allEntries)
   return (
     <>
       <h1>Main Page!</h1>
-      <EntityContainer />
+      <EntityContainer allEntries={allEntries}/>
     </>
   )
 }

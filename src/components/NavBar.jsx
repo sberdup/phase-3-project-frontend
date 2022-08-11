@@ -1,6 +1,6 @@
 import React from 'react'
 import { Menu } from 'semantic-ui-react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 
 function NavBar() {
@@ -9,7 +9,6 @@ function NavBar() {
     function clickNavLinkHandler(e) {
         console.log(e.target)
         setActiveItem(e.target.childNodes[0].textContent)
-        // setActiveItem(e.target.textContent)
     }
     return (
         <Menu widths={2} inverted>

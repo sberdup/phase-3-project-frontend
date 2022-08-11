@@ -4,14 +4,28 @@ import { Routes, Route } from 'react-router-dom'
 import EditPage from './routes/EditPage'
 import LandingPage from './routes/LandingPage'
 import NavBar from './components/NavBar'
+import {useState, useEffect} from 'react'
+
+const localUrl = 'http://localhost:9292/'
+let apiURL = localUrl
 
 function App() {
+  const [allEntries, setAllEntries] = useState([])
+  useEffect(() => {
+    async function getFetch() {
+      let resp = await fetch(apiURL+'entries')
+      resp = await resp.json()
+      setAllEntries(resp)
+    }
+    getFetch()
+  }, [])
+
   return (
     <div className="App">
       <NavBar />
-      <h1>My app</h1>
+
       <Routes>
-        <Route path='/' element={<LandingPage />}>
+        <Route path='/' element={<LandingPage allEntries={allEntries}/>}>
 
         </Route>
         <Route path='/edit' element={<EditPage />}>
@@ -22,4 +36,5 @@ function App() {
   );
 }
 
+export {apiURL};
 export default App;
