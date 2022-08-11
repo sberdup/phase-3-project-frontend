@@ -11,6 +11,7 @@ let apiURL = localUrl
 
 function App() {
   const [allEntries, setAllEntries] = useState([])
+  
   useEffect(() => {
     async function getFetch() {
       let resp = await fetch(apiURL+'entries')
@@ -28,7 +29,7 @@ function App() {
         <Route path='/' element={<LandingPage allEntries={allEntries}/>}>
 
         </Route>
-        <Route path='/edit' element={<EditPage />}>
+        <Route path='/edit' element={<EditPage allEntries={allEntries}/>}>
 
         </Route>
       </Routes>

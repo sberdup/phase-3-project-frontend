@@ -4,7 +4,7 @@ import SearchForm from './SearchForm'
 import { Card } from 'semantic-ui-react'
 import EntityCard from './EntityCard'
 
-function EntityContainer({allEntries}) {
+function EntityContainer({allEntries, editMode}) {
     console.log(allEntries)
     return (
         <div>
@@ -13,7 +13,7 @@ function EntityContainer({allEntries}) {
             <SearchForm />
             <Card.Group>
                 {allEntries.map((entry) => (
-                    <EntityCard key={entry.id} entryData={entry}/>
+                    <EntityCard key={entry.id} entryData={entry} editMode={editMode}/>
                 ))}
             </Card.Group>
         </div>

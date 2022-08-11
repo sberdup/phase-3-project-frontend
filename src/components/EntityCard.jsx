@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, Image } from 'semantic-ui-react'
 import {useState} from 'react'
 
-function EntityCard({entryData}) {
+function EntityCard({entryData, editMode}) {
     
     const [cardExpanded, setCardExpanded] = useState(false)
     
@@ -64,7 +64,7 @@ function EntityCard({entryData}) {
                 {cardExpanded && drops ? <Card.Content>Drops: {typeof drops === 'string' ? capitalizeWords(drops) : drops.map(drop => capitalizeWords(drop))}</Card.Content> : null}
 
 
-                {cardExpanded ? <Card.Content extra>Logged: {logged ? 'Yes' : 'No'}</Card.Content> : null}
+                {cardExpanded && editMode ? <Card.Content extra>Logged: {logged ? 'Yes' : 'No'}</Card.Content> : null}
             </Card.Content>
         </Card>
     )
