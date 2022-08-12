@@ -1,19 +1,22 @@
 import React from 'react'
+import { useState, useEffect } from 'react'
+
 import FilterField from './FilterField'
 import SearchForm from './SearchForm'
-import { Card } from 'semantic-ui-react'
 import EntityCard from './EntityCard'
-import { useState, useEffect } from 'react'
 import { apiURL } from '../App'
 
-function EntityContainer({allEntries, editMode}) {
+import { Card } from 'semantic-ui-react'
+
+function EntityContainer({ allEntries, editMode }) {
     console.log(allEntries)
     const [activeFilter, setActiveFilter] = useState('all')
+    const [searchParams, setSearchParams] = useState('')
     const [subset, setSubset] = useState([])
 
     useEffect(() => {
         async function getFetch() {
-            let resp = await fetch(apiURL+`category/${activeFilter}`)
+            let resp = await fetch(apiURL + `category/${activeFilter}`)
             resp = await resp.json()
             setSubset(resp)
         }
@@ -21,16 +24,24 @@ function EntityContainer({allEntries, editMode}) {
             getFetch()
         }
     }, [activeFilter])
-    
-    let currentData = (activeFilter === 'all' ? allEntries : subset) 
-    debugger
+
+    let currentData = (activeFilter === 'all' ? allEntries : subset)
+    let searchedData
+
+    if (searchParams === '') {
+        searchedData = currentData
+    } else {
+        const reg = new RegExp(`${searchParams}`, 'i')
+        searchedData = currentData.filter(entry => entry.name.search(reg) >= 0)
+    }
+
     return (
         <div>
-            <FilterField activeFilter={activeFilter} setActiveFilter={setActiveFilter}/>
-            <SearchForm />
+            <FilterField activeFilter={activeFilter} setActiveFilter={setActiveFilter} />
+            <SearchForm searchParams={searchParams} setSearchParams={setSearchParams} />
             <Card.Group centered>
-                {currentData.map((entry) => (
-                    <EntityCard key={entry.id} entryData={entry} editMode={editMode}/>
+                {searchedData.map((entry) => (
+                    <EntityCard key={entry.id} entryData={entry} editMode={editMode} />
                 ))}
             </Card.Group>
         </div>
