@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu } from 'semantic-ui-react'
+import { Divider, Menu } from 'semantic-ui-react'
 import { useNavigate, useLocation } from 'react-router-dom'
 // import { useState } from 'react'
 
@@ -13,7 +13,8 @@ function NavBar() {
     //     setActiveItem(e.target.childNodes[0].textContent)
     // }
     return (
-        <Menu widths={2} inverted>
+        <>
+        <Menu widths={2} inverted fixed='top'>
             <Menu.Item color='red' name='Main' onClick={
                 (e) => {
                     navigate('/')
@@ -31,6 +32,8 @@ function NavBar() {
                     Edit Page
             </Menu.Item>
         </Menu>
+        <Divider/>
+        </>
     )
 }
 
