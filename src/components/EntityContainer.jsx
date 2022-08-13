@@ -41,7 +41,8 @@ function EntityContainer({ allEntries, editMode, locateMode, setEntryList, setSe
             <SearchForm searchParams={searchParams} setSearchParams={setSearchParams} />
             <Card.Group centered>
                 {searchedData.map((entry) => (
-                    <EntityCard key={entry.id} entryData={entry} editMode={editMode} setSelectedEntity={setSelectedEntity}/>
+                    <EntityCard key={entry.id} entryData={entry} editMode={editMode} setSelectedEntity={setSelectedEntity}
+                        locateMode={locateMode} setEntryList={setEntryList} />
                 ))}
             </Card.Group>
         </div>
