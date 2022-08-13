@@ -5,6 +5,7 @@ import EditPage from './routes/EditPage'
 import LandingPage from './routes/LandingPage'
 import NavBar from './components/NavBar'
 import {useState, useEffect} from 'react'
+import LocationFinder from './routes/LocationFinder';
 
 const localUrl = 'http://localhost:9292/'
 let apiURL = localUrl
@@ -26,12 +27,9 @@ function App() {
       <NavBar />
 
       <Routes>
-        <Route path='/' element={<LandingPage allEntries={allEntries}/>}>
-
-        </Route>
-        <Route path='/edit' element={<EditPage allEntries={allEntries} setAllEntries={setAllEntries}/>}>
-
-        </Route>
+        <Route path='/' element={<LandingPage allEntries={allEntries}/>}/>
+        <Route path='/edit' element={<EditPage allEntries={allEntries} setAllEntries={setAllEntries}/>}/>
+        <Route path='/locator' element={<LocationFinder allEntries={allEntries}/>}/>
       </Routes>
     </div>
   );

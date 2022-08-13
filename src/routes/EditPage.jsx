@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import EntityContainer from '../components/EntityContainer'
 import { capitalizeWords } from '../components/EntityCard'
-import { Card, Image, Grid, GridColumn, Segment, Divider, Header, Button, GridRow } from 'semantic-ui-react'
+import { Card, Image, Grid, Segment, Divider, Header, Button } from 'semantic-ui-react'
 import { apiURL } from '../App'
 
 function EditPage({ allEntries, setAllEntries }) {
@@ -49,28 +49,28 @@ function EditPage({ allEntries, setAllEntries }) {
       {(!selectedEntity.name) ? <h1>Select an entry to log/delete!</h1> :
         <Grid columns={2}>
 
-          <GridColumn stretched>
+          <Grid.Column stretched>
 
-            <GridRow stretched>
+            <Grid.Row stretched>
               <Segment placeholder loading={loadingEdit}>
                 <Header size='large'>{(logged) ? 'Remove Record from your Compendium?' : 'Record to your Compendium?'}</Header>
                 {(selectedEntity.id) ? <Button primary onClick={handleLogClick}>{(logged) ? 'Un-Log this Entry' : 'Log this Entry'}</Button> :
                   <h2>Select an Entry</h2>}
               </Segment>
-            </GridRow>
+            </Grid.Row>
 
             <Divider horizontal>or</Divider>
 
-            <GridRow stretched>
+            <Grid.Row stretched>
               <Segment placeholder loading={loadingEdit}>
                 <Header size='large'>Remove this entry from the Compendium?</Header>
                 {(selectedEntity.id) ? <Button color='red' onClick={handleDeleteClick}>Delete this Entry</Button> : <h2>Select an Entry</h2>}
               </Segment>
-            </GridRow>
+            </Grid.Row>
 
-          </GridColumn>
+          </Grid.Column>
 
-          <GridColumn>
+          <Grid.Column>
             <Card centered fluid>
               <Card.Content centered textAlign='center'>
                 <Image src={image} size='large' />
@@ -90,7 +90,7 @@ function EditPage({ allEntries, setAllEntries }) {
               </Card.Content>
             </Card>
             <Divider />
-          </GridColumn>
+          </Grid.Column>
 
         </Grid>
       }

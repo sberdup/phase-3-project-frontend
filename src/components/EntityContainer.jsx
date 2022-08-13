@@ -8,7 +8,7 @@ import { apiURL } from '../App'
 
 import { Card } from 'semantic-ui-react'
 
-function EntityContainer({ allEntries, editMode, setSelectedEntity }) {
+function EntityContainer({ allEntries, editMode, locateMode, setEntryList, setSelectedEntity }) {
     console.log(allEntries)
     const [activeFilter, setActiveFilter] = useState('all')
     const [searchParams, setSearchParams] = useState('')

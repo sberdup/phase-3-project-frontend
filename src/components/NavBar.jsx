@@ -8,28 +8,21 @@ import { useNavigate, useLocation } from 'react-router-dom'
 function NavBar() {
     const navigate = useNavigate()
     let location = useLocation()
-    // function clickNavLinkHandler(e) {
-    //     console.log(e.target)
-    //     setActiveItem(e.target.childNodes[0].textContent)
-    // }
+
     return (
         <>
-        <Menu widths={2} inverted fixed='top'>
-            <Menu.Item color='red' name='Main' onClick={
-                (e) => {
-                    navigate('/')
-                }
-            }
+        <Menu widths={3} inverted fixed='top'>
+            <Menu.Item color='red' name='Main' onClick={()=> navigate('/')}
                 active={'/' === location.pathname}>
                     Main
             </Menu.Item>
-            <Menu.Item color='green' name='Edit' onClick={
-                (e) => {
-                    navigate('/edit')
-                }
-            }
+            <Menu.Item color='green' name='Edit' onClick={() => navigate('/edit')}
                 active={'/edit' === location.pathname}>
-                    Edit Page
+                    Log/Delete
+            </Menu.Item>
+            <Menu.Item color='blue' name='Map' onClick={() => navigate('/locator')}
+                active={'/locator' === location.pathname}>
+                    Finder
             </Menu.Item>
         </Menu>
         <Divider/>

@@ -8,7 +8,7 @@ function LandingPage({allEntries}) {
     <>
       <Divider/>
       <h1>Welcome to the Hyrule Compendium!</h1>
-      <EntityContainer allEntries={allEntries} editMode={false}/>
+      <EntityContainer allEntries={allEntries}/>
     </>
   )
 }
