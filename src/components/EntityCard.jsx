@@ -2,7 +2,20 @@ import React from 'react'
 import { Card, Image } from 'semantic-ui-react'
 import {useState} from 'react'
 
-function EntityCard({entryData, editMode}) {
+function capitalizeWords(string) {
+    //altered this function to fix Guardian Scout Ii e.g.
+    const newString = string.split(' ').map(str => {
+        if (str === 'ii' || str === 'iii' || str === 'iv') {
+            return str.toUpperCase()
+        } 
+        return str.charAt(0).toUpperCase() + str.slice(1)
+    })
+    return newString.join(' ')
+}
+//abstracted capitilization to function instead of below
+// const capitalName = name.split(' ').map(str => str.charAt(0).toUpperCase() + str.slice(1)).join(' ')
+
+function EntityCard({entryData, editMode, setSelectedEntity}) {
     
     const [cardExpanded, setCardExpanded] = useState(false)
     
@@ -32,22 +45,13 @@ function EntityCard({entryData, editMode}) {
             category = 'null'
     }
 
-    function capitalizeWords(string) {
-        //altered this function to fix Guardian Scout Ii e.g.
-        const newString = string.split(' ').map(str => {
-            if (str === 'ii' || str === 'iii' || str === 'iv') {
-                return str.toUpperCase()
-            } 
-            return str.charAt(0).toUpperCase() + str.slice(1)
-        })
-        return newString.join(' ')
-    }
-    //abstracted capitilization to function instead of below
-    // const capitalName = name.split(' ').map(str => str.charAt(0).toUpperCase() + str.slice(1)).join(' ')
-
     return (
         <Card onClick={() => {
             setCardExpanded(prev => !prev)
+            if (editMode) {
+                setSelectedEntity(entryData)
+                window.scrollTo(0,0)
+            }
         }}>
             <Card.Content>
                 <Image src={image} />
@@ -69,5 +73,5 @@ function EntityCard({entryData, editMode}) {
         </Card>
     )
 }
-
+export {capitalizeWords};
 export default EntityCard

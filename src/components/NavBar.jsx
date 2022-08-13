@@ -1,33 +1,33 @@
 import React from 'react'
 import { Menu } from 'semantic-ui-react'
-import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
+// import { useState } from 'react'
+
+// import loader from semantic later
 
 function NavBar() {
-    const [activeItem, setActiveItem] = useState('Main')
     const navigate = useNavigate()
-    function clickNavLinkHandler(e) {
-        console.log(e.target)
-        setActiveItem(e.target.childNodes[0].textContent)
-    }
+    let location = useLocation()
+    // function clickNavLinkHandler(e) {
+    //     console.log(e.target)
+    //     setActiveItem(e.target.childNodes[0].textContent)
+    // }
     return (
         <Menu widths={2} inverted>
             <Menu.Item color='red' name='Main' onClick={
                 (e) => {
-                    clickNavLinkHandler(e)
                     navigate('/')
                 }
             }
-                active={'Main' === activeItem}>
+                active={'/' === location.pathname}>
                     Main
             </Menu.Item>
             <Menu.Item color='green' name='Edit' onClick={
                 (e) => {
-                    clickNavLinkHandler(e)
                     navigate('/edit')
                 }
             }
-                active={'Edit Page' === activeItem}>
+                active={'/edit' === location.pathname}>
                     Edit Page
             </Menu.Item>
         </Menu>

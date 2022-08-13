@@ -8,7 +8,7 @@ import { apiURL } from '../App'
 
 import { Card } from 'semantic-ui-react'
 
-function EntityContainer({ allEntries, editMode }) {
+function EntityContainer({ allEntries, editMode, setSelectedEntity }) {
     console.log(allEntries)
     const [activeFilter, setActiveFilter] = useState('all')
     const [searchParams, setSearchParams] = useState('')
@@ -41,7 +41,7 @@ function EntityContainer({ allEntries, editMode }) {
             <SearchForm searchParams={searchParams} setSearchParams={setSearchParams} />
             <Card.Group centered>
                 {searchedData.map((entry) => (
-                    <EntityCard key={entry.id} entryData={entry} editMode={editMode} />
+                    <EntityCard key={entry.id} entryData={entry} editMode={editMode} setSelectedEntity={setSelectedEntity}/>
                 ))}
             </Card.Group>
         </div>
