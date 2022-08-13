@@ -29,7 +29,7 @@ function App() {
         <Route path='/' element={<LandingPage allEntries={allEntries}/>}>
 
         </Route>
-        <Route path='/edit' element={<EditPage allEntries={allEntries}/>}>
+        <Route path='/edit' element={<EditPage allEntries={allEntries} setAllEntries={setAllEntries}/>}>
 
         </Route>
       </Routes>

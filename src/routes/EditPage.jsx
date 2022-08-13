@@ -2,25 +2,74 @@ import React from 'react'
 import { useState } from 'react'
 import EntityContainer from '../components/EntityContainer'
 import { capitalizeWords } from '../components/EntityCard'
-import { Card, Image, Grid, GridColumn, GridRow } from 'semantic-ui-react'
+import { Card, Image, Grid, GridColumn, Segment, Divider, Header, Button, GridRow } from 'semantic-ui-react'
+import { apiURL } from '../App'
 
-function EditPage({ allEntries }) {
+function EditPage({ allEntries, setAllEntries }) {
   const [selectedEntity, setSelectedEntity] = useState({})
+  const [loadingEdit, setLoadingEdit] = useState(false)
   let { id, category_id, description, image, name, logged, cooking_effect, hearts_recovered, attack, defense, drops } = selectedEntity
-  debugger
+
+  async function handleLogClick() {
+    setLoadingEdit(true)
+    console.log(id)
+
+    let resp = await fetch(apiURL + `entry/${id}`, {
+      method: 'PATCH', headers: { 'Content-type': 'application/json' }
+    })
+    resp = await resp.json()
+
+    if (!resp.ok) {
+      setAllEntries([...allEntries].map(entry => {
+        if (entry.id === id) {
+          entry.logged = (!entry.logged)
+        }
+        return entry
+      }))
+      setSelectedEntity({ ...selectedEntity, logged: !logged })
+    }
+    setLoadingEdit(false)
+  }
+  async function handleDeleteClick() {
+    setLoadingEdit(true)
+    console.log(id)
+
+    let resp = await fetch(apiURL + `entry/${id}`, { method: 'DELETE' })
+    resp = await resp.json()
+
+    if (!resp.ok) {
+      setAllEntries([...allEntries].filter(entry => entry.id !== id))
+      setSelectedEntity({ name: 'Entry Deleted Successfully' })
+    }
+    setLoadingEdit(false)
+  }
   return (
     <>
-      <h1>Set whether you've recorded an entry, delete, or add a new one!</h1>
-      {!selectedEntity.name ? null :
-        <Grid centered columns={2}>
+      <Divider />
+      {(!selectedEntity.name) ? <h1>Select an entry to log/delete!</h1> :
+        <Grid columns={2}>
+
           <GridColumn stretched>
-            <GridRow>
-              <h2>Edit</h2>
+
+            <GridRow stretched>
+              <Segment placeholder loading={loadingEdit}>
+                <Header size='large'>{(logged) ? 'Remove Record from your Compendium?' : 'Record to your Compendium?'}</Header>
+                {(selectedEntity.id) ? <Button primary onClick={handleLogClick}>{(logged) ? 'Un-Log this Entry' : 'Log this Entry'}</Button> :
+                  <h2>Select an Entry</h2>}
+              </Segment>
             </GridRow>
-            <GridRow>
-              <h2>Delete</h2>
+
+            <Divider horizontal>or</Divider>
+
+            <GridRow stretched>
+              <Segment placeholder loading={loadingEdit}>
+                <Header size='large'>Remove this entry from the Compendium?</Header>
+                {(selectedEntity.id) ? <Button color='red' onClick={handleDeleteClick}>Delete this Entry</Button> : <h2>Select an Entry</h2>}
+              </Segment>
             </GridRow>
+
           </GridColumn>
+
           <GridColumn>
             <Card centered fluid>
               <Card.Content centered textAlign='center'>
@@ -40,7 +89,9 @@ function EditPage({ allEntries }) {
                 <Card.Content extra>Logged: {logged ? 'Yes' : 'No'}</Card.Content>
               </Card.Content>
             </Card>
+            <Divider />
           </GridColumn>
+
         </Grid>
       }
       <EntityContainer allEntries={allEntries} editMode={true} setSelectedEntity={setSelectedEntity} />

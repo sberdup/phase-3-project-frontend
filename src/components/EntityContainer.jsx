@@ -23,7 +23,7 @@ function EntityContainer({ allEntries, editMode, setSelectedEntity }) {
         if (activeFilter !== 'all') {
             getFetch()
         }
-    }, [activeFilter])
+    }, [activeFilter, allEntries])
 
     let currentData = (activeFilter === 'all' ? allEntries : subset)
     let searchedData
