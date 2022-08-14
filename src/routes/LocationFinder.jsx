@@ -35,7 +35,7 @@ function LocationFinder({ allEntries }) {
         // }
         // waitForArray()
         function uniqueLocations(locationsArray) {
-            console.log(locationsArray)
+            console.log('Incoming location to uniqueLocation', locationsArray)
             let i = locationsArray.length
             const allLocations = locationsArray.flat()
             if (i < entryList.length) {
@@ -62,8 +62,12 @@ function LocationFinder({ allEntries }) {
             console.log(filterLocations)
             return filterLocations
         }
-        const locationArray = entryList.map(entry => entry.locations)
-        setSharedLocations(uniqueLocations(locationArray))
+        async function uniqueCaller(entryList) {
+            const locationArray = await Promise.all(entryList.map(entry => entry.locations))
+            return locationArray
+        }
+        const returnValue = uniqueCaller(entryList) 
+        setSharedLocations(uniqueLocations(returnValue))
     }, [entryList])
     // const listItems = uniqueLocations(entityLocations)
     return (
