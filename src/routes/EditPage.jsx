@@ -72,7 +72,7 @@ function EditPage({ allEntries, setAllEntries }) {
 
           <Grid.Column>
             <Card centered fluid>
-              <Card.Content centered textAlign='center'>
+              <Card.Content textAlign='center'>
                 <Image src={image} size='large' />
                 <Card.Header>{capitalizeWords(name)}</Card.Header>
 

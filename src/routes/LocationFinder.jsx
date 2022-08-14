@@ -20,11 +20,13 @@ function LocationFinder({ allEntries }) {
         async function getLocations(id) {
             let entryData = await fetch(apiURL + `entry/${id}`)
             entryData = await entryData.json()
-            entityLocations.current = await entryData.locations.map(loc => loc.name)
-            debugger
+            const locations = await entryData.locations.map(loc => loc.name)
+            console.log(locations)
+            return locations
         }
-        function uniqueLocations(locationsArray) {
-            debugger
+        const locationsArray = entryList.map(entryId => getLocations(entryId))
+        async function uniqueLocations(locationsArray) {
+            console.log(locationsArray)
             let i = locationsArray.length
             const allLocations = locationsArray.flat()
             if (i < entryList.length) {
@@ -44,10 +46,16 @@ function LocationFinder({ allEntries }) {
             })
             return commonLocations
         }
-        const allLocations = entryList.map(entryId => getLocations(entryId))
-        debugger
-        entityLocations.current = uniqueLocations(allLocations)
-        debugger
+        async function runLocations() {
+            console.log(locationsArray)
+            const interM = await uniqueLocations(locationsArray)
+            entityLocations.current = await interM
+        }
+        runLocations()
+        // const allLocations = entryList.map(entryId => getLocations(entryId))
+        // debugger
+        // entityLocations.current = uniqueLocations(allLocations)
+        // debugger
     }, [entryList])
     return (
         <>
@@ -67,7 +75,7 @@ function LocationFinder({ allEntries }) {
                     </Grid>
                     <Container>
                         <Header size='medium'> Locations for the above:</Header>
-                        <p>{entityLocations.current.join(' ')}</p>
+                        <p>{entityLocations.current.join(', ')}</p>
                     </Container>
 
                     <Divider />
