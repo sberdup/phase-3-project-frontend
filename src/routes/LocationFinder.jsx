@@ -1,57 +1,71 @@
 import React from 'react'
-import { useState } from 'react'
 import { Grid, Divider, Card, Header, Container } from 'semantic-ui-react'
 import EntityContainer from '../components/EntityContainer'
 import EntityCard from '../components/EntityCard'
-import { useEffect, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { apiURL } from '../App'
 
 function LocationFinder({ allEntries }) {
     const [entryList, setEntryList] = useState([])
+    const [entityLocations, setEntityLocations] = useState([])
     let entriesToMap = allEntries.filter(entry => !!entryList.find(listId => listId === entry.id))
+    // using list of IDs from clicking on cards below to pick which cards to render above
 
     function trackClickHandler(entryId) {
         debugger
         setEntryList([...entryList].filter(entry => entry !== entryId))
     }
 
-    const entityLocations = useRef([])
-    useEffect(() => {
-        async function getLocations() {
-            const locationsArray = entryList.map(async(entryId) => {
-                let entryData = await fetch(apiURL + `entry/${entryId}`)
-                entryData = await entryData.json()
-                let data = await entryData.locations.map(loc => loc.name)
-                return data
-            })
-            console.log(locationsArray)
-
-            let i = locationsArray.length
-            const allLocations = locationsArray.flat()
-            if (i < entryList.length) {
-                entityLocations.current = 'No Common Locations'
-                return
-            }
-            const commonLocations = []
-            const tally = {}
-            allLocations.forEach(location => {
-                if (tally[location] === i - 1) {
-                    tally[location]++
-                    commonLocations.push(location)
-                } else if (!tally[location]) {
-                    tally[location] = 1
-                } else {
-                    tally[location]++
-                }
-            })
-            entityLocations.current = commonLocations
+    async function getLocations(id) {
+        debugger
+        const entryData = await fetch(apiURL + `entry/${id}`)
+        const response = await entryData.json()
+        const locations = response.locations.map(loc => loc.name)
+        console.log(locations)
+        return locations
+    }
+    function uniqueLocations(locationsArray) {
+        console.log(locationsArray)
+        let i = locationsArray.length
+        const allLocations = locationsArray.flat()
+        if (i < entryList.length) {
+            return 'No Common Locations'
         }
-        getLocations()
-        // const allLocations = entryList.map(entryId => getLocations(entryId))
-        // debugger
-        // entityLocations.current = uniqueLocations(allLocations)
-        // debugger
+        let commonLocations = []
+        const tally = {}
+        allLocations.forEach(location => {
+            console.log('location in for each: ', location)
+            if (tally[location] === i - 1) {
+                tally[location]++
+            } else if (location === undefined) {
+                console.log('undefined value')
+            } else if (!tally[location]) {
+                tally[location] = 1
+                commonLocations.push(location)
+            } else {
+                tally[location]++
+            }
+        })
+        console.log(tally)
+        console.log(commonLocations)
+        const filterLocations = commonLocations.filter(location => tally[location] === locationsArray.length)
+        console.log(filterLocations)
+        return filterLocations
+    }
+    useEffect(() => {
+        async function waitForArray() {
+            let location
+            if (entryList.length !== 0) {
+                location = await getLocations(entryList[entryList.length - 1])
+                // locationResolve = await waitForArray()
+            }
+            console.log(location)
+            // setEntityLocations(prev => [...prev, location])
+            setEntityLocations([location])
+        }
+        waitForArray()
     }, [entryList])
+    const listItems = uniqueLocations(entityLocations)
     return (
         <>
             <Divider />
@@ -70,7 +84,7 @@ function LocationFinder({ allEntries }) {
                     </Grid>
                     <Container>
                         <Header size='medium'> Locations for the above:</Header>
-                        <p>{entityLocations.current.join(', ')}</p>
+                        {(listItems.length > 0) ? listItems.map(location => (<Card key={location} header={location} />)) : <h3>nothin</h3>}
                     </Container>
 
                     <Divider />
