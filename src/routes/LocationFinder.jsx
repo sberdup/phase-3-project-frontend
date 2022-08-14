@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 
 function LocationFinder({ allEntries }) {
     const [entryList, setEntryList] = useState([])
-    const [sharedLocations, setSharedLocations] = useState('none')
+    const [sharedLocations, setSharedLocations] = useState([])
     // let entriesToMap = allEntries.filter(entry => !!entryList.find(listId => listId === entry.id))
     // using list of IDs from clicking on cards below to pick which cards to render above
 
@@ -15,13 +15,10 @@ function LocationFinder({ allEntries }) {
         setEntryList([...entryList].filter(entry => entry.id !== entryId))
     }
 
-    // async function getLocations(id) {
-    //     debugger
-    //     const entryData = await fetch(apiURL + `entry/${id}`)
-    //     const response = await entryData.json()
-    //     const locations = response.locations.map(loc => loc.name)
-    //     console.log(locations)
-    //     return locations
+    // async function resolvePromises(array) {
+    //     const promises = array.map(entry => entry.locations)
+    //     const resolved = await Promise.all(promises)
+    //     return resolved
     // }
 
     useEffect(() => {
@@ -35,6 +32,7 @@ function LocationFinder({ allEntries }) {
         // }
         // waitForArray()
         function uniqueLocations(locationsArray) {
+            debugger
             console.log('Incoming location to uniqueLocation', locationsArray)
             let i = locationsArray.length
             const allLocations = locationsArray.flat()
@@ -62,12 +60,19 @@ function LocationFinder({ allEntries }) {
             console.log(filterLocations)
             return filterLocations
         }
-        async function uniqueCaller(entryList) {
-            const locationArray = await Promise.all(entryList.map(entry => entry.locations))
-            return locationArray
+        console.log('Entering location finder: ', entryList)
+        if (entryList.length !== 0) {
+            const locationArray = entryList.map(entry => {
+                const retArr = []
+                for (const i of entry.locations) {
+                    console.log('name getting pushed into return for entry: ', i.name)
+                    retArr.push(i.name)
+                }
+                return retArr
+            })
+            const uniqLoc = uniqueLocations(locationArray)
+            setSharedLocations(uniqLoc)
         }
-        const returnValue = uniqueCaller(entryList) 
-        setSharedLocations(uniqueLocations(returnValue))
     }, [entryList])
     // const listItems = uniqueLocations(entityLocations)
     return (
@@ -87,8 +92,11 @@ function LocationFinder({ allEntries }) {
                         </Grid.Row>
                     </Grid>
                     <Container>
-                        <Header size='medium'> Locations for the above:</Header>
-                        {(sharedLocations.length > 0) ? sharedLocations.map(location => (<Card key={location} header={location} />)) : <h3>nothin</h3>}
+                        <Divider/>
+                        <Header size='medium'><u>Locations Shared by the Above</u></Header>
+                        <Card.Group centered>
+                            {(sharedLocations.length > 0) ? sharedLocations.map(location => (<Card key={location} header={location} />)) : <h3>None</h3>}
+                        </Card.Group>
                     </Container>
 
                     <Divider />

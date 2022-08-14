@@ -19,7 +19,7 @@ function capitalizeWords(string) {
 
 function EntityCard({ entryData, editMode, setSelectedEntity, locateMode, setEntryList, trackClickHandler }) {
     // very cool destructuring, shout out to Isaiah
-    const { id, category_id, description, image, name, logged, cooking_effect, hearts_recovered, attack, defense, drops } = entryData
+    const { id, category_id, description, image, name, logged, cooking_effect, hearts_recovered, attack, defense, drops, locations } = entryData
 
     const [cardExpanded, setCardExpanded] = useState(false)
     let cardExpandedMode = editMode || cardExpanded
@@ -48,12 +48,20 @@ function EntityCard({ entryData, editMode, setSelectedEntity, locateMode, setEnt
     }
 
     async function getLocations(id) {
+        const data = await fetch(apiURL + `entry/${id}`)
+        const response = await data.json()
+        const locations = await response.locations
         debugger
-        const entryData = await fetch(apiURL + `entry/${id}`)
-        const response = await entryData.json()
-        const locations = await response.locations.map(loc => loc.name)
-        console.log(locations)
-        return await locations
+        console.log(entryData, locations)
+        setEntryList(prev => [...prev, {...entryData, locations: locations}])
+        return locations
+    }
+
+     function joinLocations(locations) {
+        //making this function async totally destroyed React's flow and causes improper rendering in the return
+        const joinedLocations =  locations.map(location => location.name).join(', ')
+        console.log(joinedLocations)
+        return joinedLocations
     }
 
     return (
@@ -65,14 +73,16 @@ function EntityCard({ entryData, editMode, setSelectedEntity, locateMode, setEnt
                 setCardExpanded(prev => !prev)
             }
             if (locateMode) {
-                setEntryList(prev => {
-                    console.log('entering setEntryList', prev)
-                    if (!prev.find(entry => entry.id === id)) {
-                        return [...prev, {entryData, locations: getLocations(id)}]
-                    }
-                    console.log('exit after here, id was:', id)
-                    return prev
-                })
+                getLocations(id)
+                // setEntryList(prev => {
+                //     debugger
+                //     console.log('entering setEntryList', prev)
+                //     if (!prev.find(entry => entry.id === id)) {
+                //         return [...prev, {entryData, locations: getLocations(id)}]
+                //     }
+                //     console.log('exit after here, id was:', id)
+                //     return prev
+                // })
             }
         }}>
             <Card.Content>
@@ -91,6 +101,7 @@ function EntityCard({ entryData, editMode, setSelectedEntity, locateMode, setEnt
 
                 {cardExpandedMode && editMode ? <Card.Content extra>Logged: {logged ? 'Yes' : 'No'}</Card.Content> : null}
             </Card.Content>
+                {locations ? <Card.Content attached='bottom'>Locations: {joinLocations(locations) || 'n/a'}</Card.Content> : null}
                 {!!trackClickHandler ? <Button attached='bottom' color='orange' onClick={() => trackClickHandler(id)}>Stop Tracking</Button> : null}
         </Card>
     )
