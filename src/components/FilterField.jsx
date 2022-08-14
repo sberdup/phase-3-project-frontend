@@ -15,10 +15,9 @@ function FilterField({activeFilter, setActiveFilter}) {
     }
 
     function clickFilterHandler() {
-        console.log(this)
         setActiveFilter(this.name)
     }
-    
+
     return (
         <Menu widths={categories.length}>
             {categories.map((category, idx) => (

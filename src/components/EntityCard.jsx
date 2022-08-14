@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { apiURL } from '../App'
 
 function capitalizeWords(string) {
-    // console.log('entering capitalize with string: ', string)
     //altered this function to fix Guardian Scout Ii e.g.
     const newString = string.split(' ').map(str => {
         if (str === 'ii' || str === 'iii' || str === 'iv') {
@@ -74,15 +73,6 @@ function EntityCard({ entryData, editMode, setSelectedEntity, locateMode, setEnt
             }
             if (locateMode) {
                 getLocations(id)
-                // setEntryList(prev => {
-                //     debugger
-                //     console.log('entering setEntryList', prev)
-                //     if (!prev.find(entry => entry.id === id)) {
-                //         return [...prev, {entryData, locations: getLocations(id)}]
-                //     }
-                //     console.log('exit after here, id was:', id)
-                //     return prev
-                // })
             }
         }}>
             <Card.Content>
