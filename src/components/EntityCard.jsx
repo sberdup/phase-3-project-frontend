@@ -1,8 +1,10 @@
 import React from 'react'
 import { Card, Image, Button } from 'semantic-ui-react'
 import { useState } from 'react'
+import { apiURL } from '../App'
 
 function capitalizeWords(string) {
+    // console.log('entering capitalize with string: ', string)
     //altered this function to fix Guardian Scout Ii e.g.
     const newString = string.split(' ').map(str => {
         if (str === 'ii' || str === 'iii' || str === 'iv') {
@@ -45,6 +47,15 @@ function EntityCard({ entryData, editMode, setSelectedEntity, locateMode, setEnt
             category = 'null'
     }
 
+    async function getLocations(id) {
+        debugger
+        const entryData = await fetch(apiURL + `entry/${id}`)
+        const response = await entryData.json()
+        const locations = await response.locations.map(loc => loc.name)
+        console.log(locations)
+        return await locations
+    }
+
     return (
         <Card onClick={() => {
             if (editMode) {
@@ -55,16 +66,18 @@ function EntityCard({ entryData, editMode, setSelectedEntity, locateMode, setEnt
             }
             if (locateMode) {
                 setEntryList(prev => {
-                    if (!prev.find(entryId => entryId === id)) {
-                        return [...prev, id]
+                    console.log('entering setEntryList', prev)
+                    if (!prev.find(entry => entry.id === id)) {
+                        return [...prev, {entryData, locations: getLocations(id)}]
                     }
+                    console.log('exit after here, id was:', id)
                     return prev
                 })
             }
         }}>
             <Card.Content>
                 <Image src={image} />
-                <Card.Header>{capitalizeWords(name)}</Card.Header>
+                <Card.Header>{name ? capitalizeWords(name) : 'n/a'}</Card.Header>
 
                 {cardExpandedMode ? <Card.Meta>#{id} / {category}</Card.Meta> : null}
 
