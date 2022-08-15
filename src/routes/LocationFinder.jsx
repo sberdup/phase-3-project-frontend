@@ -31,6 +31,7 @@ function LocationFinder({ allEntries }) {
                 } else if (location === undefined) {
                 } else if (!tally[location]) {
                     tally[location] = 1
+                    commonLocations.push(location)
                 } else {
                     tally[location]++
                 }
@@ -40,6 +41,7 @@ function LocationFinder({ allEntries }) {
         }
 
         if (entryList.length !== 0) {
+            debugger
             const locationArray = entryList.map(entry => {
                 const retArr = []
                 for (const i of entry.locations) {
